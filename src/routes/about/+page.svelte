@@ -1,4 +1,9 @@
-<h1 class="text-3xl">WELCOME</h1>
+<h1 class="text-3xl">Lorem ipsum dolor.</h1>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus amet blanditiis dicta iure,
+    laudantium, mollitia nam nisi praesentium quaerat quia suscipit tempora. Laudantium, quia,
+    sapiente!
+</p>
 
 <div class="grid grid-cols-3 gap-3 m-5">
     <div class="bg-amber-200 shadow rounded p-2">

@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Information {
+  id       Int        @id @default(autoincrement())
+  time     DateTime?
+  duration Int?
+  location String?
+  Activity Activity[]
+}
+
+model Activity {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  content     String
+
+  informationId Int?
+  information   Information? @relation(fields: [informationId], references: [id])
+
+  activityTypeName String
+  activityType     ActivityType @relation(fields: [activityTypeName], references: [name])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tags      Tag[]
+}
+
+// QuickThought, JournalEntry, Task, Habit, Goal, Project, Event, Note, etc.
+model ActivityType {
+  name       String     @id
+  activities Activity[]
+}
+
+// QUESTIONS ANS STUFF
+
+model Tag {
+  name             String          @id
+  questions        Question[]
+  activities       Activity[]
+  QuestionSchema   QuestionSchema? @relation(fields: [questionSchemaId], references: [id])
+  questionSchemaId Int?
+}
+
+model QuestionSchema {
+  id          Int      @id @default(autoincrement())
+  question    String
+  description String
+  createdAt   DateTime @default(now())
+
+  possibleAnswerId Int            @unique
+  possibleAnswer   PossibleAnswer @relation(fields: [possibleAnswerId], references: [id])
+
+  tags              Tag[]
+  questions         Question[]
+  ScheduledQuestion ScheduledQuestion[]
+}
+
+model AnswerType {
+  name        String     @id
+  description String
+  Question    Question[]
+}
+
+// AnswerPossibilityType: YesNo, MultipleChoice, Number, Text, etc.
+model PossibleAnswerType {
+  name           String           @id
+  possibleAnswer PossibleAnswer[]
+}
+
+// Programatically get the possible answers for a question where the format is based on the answerPossibilityType
+model PossibleAnswer {
+  id          Int    @id @default(autoincrement())
+  description String
+
+  possibleAnswer         String
+  possibleAnswerTypeName String
+  possibleAnswerType     PossibleAnswerType @relation(fields: [possibleAnswerTypeName], references: [name])
+
+  QuestionSchema QuestionSchema?
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+
+  question    String
+  description String
+
+  answer String
+
+  answerTypeName String
+  answerType     AnswerType @relation(fields: [answerTypeName], references: [name])
+
+  questionSchemaId Int?
+  questionSchema   QuestionSchema? @relation(fields: [questionSchemaId], references: [id], onDelete: SetNull)
+
+  createdAt  DateTime  @default(now())
+  answeredAt DateTime?
+  isAnswered Boolean   @default(false)
+  tags       Tag[]
+}
+
+model Schedule {
+  id                Int                 @id @default(autoincrement())
+  frequency         String
+  unit              String
+  interval          Int
+  dayOfWeek         Int
+  ScheduledQuestion ScheduledQuestion[]
+}
+
+// no end means it's a recurring task
+// stacking means new Questions will be created even if it is not the day it should be created
+model ScheduledQuestion {
+  id Int @id @default(autoincrement())
+
+  questionSchemaId Int
+  questionSchema   QuestionSchema @relation(fields: [questionSchemaId], references: [id])
+
+  scheduleId Int
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+
+  start    DateTime  @default(now())
+  maxCount Int?
+  end      DateTime?
+  active   Boolean   @default(true)
+
+  stacking Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ORGANIZING STUFF
+model OrganizationalCategory {
+  name               String               @id
+  description        String
+  color              String?             @default("#808080")
+  icon               String?             @default("folder")
+  OrganizationalItem OrganizationalItem[]
+  createdAt          DateTime             @default(now())
+}
+
+model OrganizationalItem {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  count       Int?
+
+  color       String? @default("#808080")
+  icon        String? @default("book")
+  createdAt DateTime @default(now())
+
+  categoryName                  String
+  category                      OrganizationalCategory          @relation(fields: [categoryName], references: [name])
+  OrganizationalSubItem         OrganizationalSubItem[]
+  OrganizationalLocationHistory OrganizationalLocationHistory[]
+}
+
+model OrganizationalSubItem {
+  name        String  @id
+  description String?
+  count       Int?
+
+  createdAt DateTime @default(now())
+
+  itemId Int
+  item   OrganizationalItem @relation(fields: [itemId], references: [id])
+}
+
+model OrganizationalLocationHistory {
+  id     Int                @id @default(autoincrement())
+  itemId Int
+  item   OrganizationalItem @relation(fields: [itemId], references: [id])
+
+  locationName String
+  location     OrganizationalLocation @relation(fields: [locationName], references: [name])
+
+  start DateTime  @default(now())
+  end   DateTime?
+}
+
+model OrganizationalLocation {
+  name                          String                          @id
+  locationName                  String?
+  description                   String?
+  color                         String?                         @default("#808080")
+  icon                          String?                         @default("house")
+  createdAt                     DateTime                        @default(now())
+  OrganizationalLocationHistory OrganizationalLocationHistory[]
+}

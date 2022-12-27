@@ -4,6 +4,8 @@ node_modules
 /.svelte-kit
 /package
 .env
+/prisma/dev.db
+/static/fontawesome
 .env.*
 !.env.example
 vite.config.js.timestamp-*
