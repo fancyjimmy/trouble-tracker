@@ -5,7 +5,7 @@
 
     export let data: PageServerLoad
     let createCategoryDialog;
-    let newIcon = "";
+    let newIcon = "folder";
 </script>
 
 

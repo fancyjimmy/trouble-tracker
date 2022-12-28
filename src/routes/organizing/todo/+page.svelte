@@ -16,4 +16,8 @@
     <li>DELETING STUFF [item, location, category] 10</li>
     <li>Light Mode / Themes [*] 10</li>
     <li>Interface segregation of the repository [lib/repository] 2</li>
+    <li>clean up the lib folder [lib/*] 2</li>
+
+    <li>illegal characters in name [category, location] 3</li>
+    <li>VERIFICATION OF CREATE STATEMENTS and ERROR HANDLING [organizing/*] 13</li>
 </ol>

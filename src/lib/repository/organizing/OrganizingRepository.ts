@@ -195,6 +195,9 @@ export class OrganizingRepositoryImpl implements OrganizingRepository {
         const createdItem = await this.db.organizationalItem.create({
             data: item
         });
+        if (locationName === null || locationName === undefined || locationName.trim() === "") {
+            return createdItem;
+        }
 
         await this.db.organizationalLocationHistory.create({
             data: {

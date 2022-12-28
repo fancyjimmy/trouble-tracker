@@ -18,6 +18,7 @@ export const actions : Actions = {
         const name = formData.get("name") as string;
         const description = formData.get("description") as string;
         const color = formData.get("color") as string;
+        const count = formData.get("count") as string;
         const icon = formData.get("icon") as string;
         const categoryName = formData.get("category") as string;
 
@@ -25,6 +26,7 @@ export const actions : Actions = {
             name: name,
             description: description,
             categoryName: categoryName,
+            count: count ? parseInt(count) : 1,
             color: color,
             icon: icon,
         } as OrganizationalItem, params.name);

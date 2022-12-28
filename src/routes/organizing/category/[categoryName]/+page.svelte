@@ -5,7 +5,7 @@
 
     export let data: PageServerLoad;
     let newItemDialog;
-    let itemIcon;
+    let itemIcon = "question";
 </script>
 
 
