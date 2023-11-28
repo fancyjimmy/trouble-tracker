@@ -131,7 +131,6 @@ export default class Schedule {
             next = this.nextDayOfWeek(next, this.dayOfWeek!);
         }
 
-
         return next;
     }
 }

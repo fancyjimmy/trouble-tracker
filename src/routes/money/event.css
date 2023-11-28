@@ -1,0 +1,16 @@
+h1.header {
+    @apply text-3xl text-white font-semibold;
+}
+
+h2.header{
+    @apply text-2xl text-white font-semibold;
+}
+
+h3.header{
+    @apply text-xl text-white font-semibold;
+}
+
+h4.header{
+    @apply text-lg text-white font-semibold;
+}
+

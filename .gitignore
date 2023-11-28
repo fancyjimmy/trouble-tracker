@@ -5,6 +5,7 @@ node_modules
 /package
 .env
 /prisma/dev.db
+/prisma/backup
 /static/fontawesome
 .env.*
 !.env.example

@@ -18,8 +18,10 @@
 
         </ul>
         <ul class="flex flex-col my-auto gap-2">
+            <NavLink text="Events" icon="fa-solid fa-bookmark" href="/dashboard" currentRoute={$page.route.id} color="#facc15"/>
             <NavLink text="Organization" icon="fa-solid fa-cube" href="/organizing" currentRoute={$page.route.id}/>
-            <NavLink text="About" icon="fa-solid fa-info" href="/about" currentRoute={$page.route.id} color="#facc15"/>
+            <NavLink text="Money" icon="fa-solid fa-money-bill" href="/money" color="#84cc16" currentRoute={$page.route.id}/>
+            <NavLink text="About" icon="fa-solid fa-info" href="/about" currentRoute={$page.route.id} color="#808080"/>
         </ul>
     </nav>
 

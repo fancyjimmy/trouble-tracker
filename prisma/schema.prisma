@@ -144,8 +144,8 @@ model ScheduledQuestion {
 model OrganizationalCategory {
   name               String               @id
   description        String
-  color              String?             @default("#808080")
-  icon               String?             @default("folder")
+  color              String?              @default("#808080")
+  icon               String?              @default("folder")
   OrganizationalItem OrganizationalItem[]
   createdAt          DateTime             @default(now())
 }
@@ -156,25 +156,13 @@ model OrganizationalItem {
   description String?
   count       Int?
 
-  color       String? @default("#808080")
-  icon        String? @default("book")
+  color     String?  @default("#808080")
+  icon      String?  @default("book")
   createdAt DateTime @default(now())
 
   categoryName                  String
   category                      OrganizationalCategory          @relation(fields: [categoryName], references: [name])
-  OrganizationalSubItem         OrganizationalSubItem[]
   OrganizationalLocationHistory OrganizationalLocationHistory[]
-}
-
-model OrganizationalSubItem {
-  name        String  @id
-  description String?
-  count       Int?
-
-  createdAt DateTime @default(now())
-
-  itemId Int
-  item   OrganizationalItem @relation(fields: [itemId], references: [id])
 }
 
 model OrganizationalLocationHistory {
@@ -197,4 +185,98 @@ model OrganizationalLocation {
   icon                          String?                         @default("house")
   createdAt                     DateTime                        @default(now())
   OrganizationalLocationHistory OrganizationalLocationHistory[]
+}
+
+// PROJECTS BOARD
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  color       String?  @default("#808080")
+  icon        String?  @default("book")
+  createdAt   DateTime @default(now())
+
+  todoItems TodoItem[]
+}
+
+// start, finish, ongoing, archived
+model TodoState {
+  name        String        @id
+  todoItem    TodoItem[]
+  todoHistory TodoHistory[]
+}
+
+model TodoItem {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  solution    String?
+
+  priority Int? @default(0)
+  effort   Int? @default(0)
+
+  stateName String
+  state     TodoState @relation(fields: [stateName], references: [name])
+
+  createdAt DateTime @default(now())
+
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [id])
+
+  todoHistory TodoHistory[]
+}
+
+model TodoHistory {
+  id     Int      @id @default(autoincrement())
+  itemId Int
+  item   TodoItem @relation(fields: [itemId], references: [id])
+
+  stateName String
+  state     TodoState @relation(fields: [stateName], references: [name])
+
+  start DateTime  @default(now())
+  end   DateTime?
+}
+
+// Money Managing
+
+model MoneyCategory {
+  name         String             @id
+  description  String
+  isSpending   Boolean            @default(true)
+  color        String?            @default("#808080")
+  icon         String?            @default("money")
+  createdAt    DateTime           @default(now())
+  transactions MoneyTransaction[]
+}
+
+model Company {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  MoneyTransaction MoneyTransaction[]
+}
+
+model Account {
+  name             String             @id
+  description      String
+  color            String?            @default("#808080")
+  icon             String?            @default("money")
+  createdAt        DateTime           @default(now())
+  MoneyTransaction MoneyTransaction[]
+}
+
+model MoneyTransaction {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  amount      Int
+  createdAt   DateTime @default(now())
+  companyId   Int?
+  company     Company? @relation(fields: [companyId], references: [id])
+
+  accountName       String
+  account           Account       @relation(fields: [accountName], references: [name])
+  moneyCategoryName String
+  moneyCategory     MoneyCategory @relation(fields: [moneyCategoryName], references: [name])
 }
