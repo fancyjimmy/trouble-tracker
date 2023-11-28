@@ -4,7 +4,6 @@ node_modules
 /.svelte-kit
 /package
 .env
-/prisma/dev.db
 /prisma/backup
 /static/fontawesome
 .env.*
